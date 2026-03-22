@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<Actions>
+	<!-- Thermostat Actions -->
+	<Action id="thermostat_setSetpointHeat" deviceFilter="self.shellyThermostat">
+		<Name>Set Heat Setpoint</Name>
+		<CallbackMethod>thermostat_setSetpointHeat</CallbackMethod>
+		<ConfigUI>
+			<Field id="temperature" type="textfield" defaultValue="70">
+				<Label>Temperature (°F):</Label>
+			</Field>
+		</ConfigUI>
+	</Action>
+
+	<Action id="thermostat_setHvacMode" deviceFilter="self.shellyThermostat">
+		<Name>Set HVAC Mode</Name>
+		<CallbackMethod>thermostat_setHvacMode</CallbackMethod>
+		<ConfigUI>
+			<Field id="mode" type="menu" defaultValue="0">
+				<Label>HVAC Mode:</Label>
+				<List>
+					<Option value="0">Off</Option>
+					<Option value="1">Heat</Option>
+				</List>
+			</Field>
+		</ConfigUI>
+	</Action>
+</Actions>

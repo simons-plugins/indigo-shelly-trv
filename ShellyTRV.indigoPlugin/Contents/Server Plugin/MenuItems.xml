@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<MenuItems>
+	<MenuItem id="discoverEquipment">
+		<Name>Discover Equipment</Name>
+		<CallbackMethod>discoverEquipment</CallbackMethod>
+	</MenuItem>
+</MenuItems>

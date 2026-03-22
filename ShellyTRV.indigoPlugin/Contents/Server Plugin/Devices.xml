@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<Devices>
+	<!-- Coordinator Device -->
+	<Device type="custom" id="shellyController">
+		<Name>Shelly TRV Coordinator</Name>
+		<ConfigUI>
+			<Field id="brokerHost" type="textfield" defaultValue="localhost" alwaysUseInDialogHeightCalc="true">
+				<Label>MQTT Broker Host:</Label>
+			</Field>
+			<Field id="brokerPort" type="textfield" defaultValue="1883">
+				<Label>MQTT Broker Port:</Label>
+			</Field>
+			<Field id="mqttUsername" type="textfield">
+				<Label>MQTT Username:</Label>
+			</Field>
+			<Field id="mqttPassword" type="textfield">
+				<Label>MQTT Password:</Label>
+			</Field>
+			<Field id="rootTopic" type="textfield" defaultValue="shellies">
+				<Label>MQTT Root Topic:</Label>
+			</Field>
+			<Field id="controllerId" type="textfield" hidden="true">
+				<Label>Controller ID:</Label>
+			</Field>
+		</ConfigUI>
+		<States>
+			<State id="mqttStatus">
+				<ValueType>String</ValueType>
+				<TriggerLabel>MQTT Connection Status</TriggerLabel>
+				<ControlPageLabel>MQTT Status</ControlPageLabel>
+			</State>
+			<State id="lastMessage">
+				<ValueType>String</ValueType>
+				<TriggerLabel>Last Message Time</TriggerLabel>
+				<ControlPageLabel>Last Message</ControlPageLabel>
+			</State>
+		</States>
+		<UiDisplayStateId>mqttStatus</UiDisplayStateId>
+	</Device>
+
+	<!-- Thermostat Device -->
+	<Device type="thermostat" id="shellyThermostat" allowUserCreation="false">
+		<Name>Shelly TRV Thermostat</Name>
+		<ConfigUI>
+			<Field id="controllerId" type="textfield" hidden="true">
+				<Label>Controller ID:</Label>
+			</Field>
+			<Field id="equipmentId" type="textfield" hidden="true">
+				<Label>Equipment ID:</Label>
+			</Field>
+		</ConfigUI>
+		<States>
+			<State id="temperatureInput1">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Temperature Changed</TriggerLabel>
+				<ControlPageLabel>Temperature</ControlPageLabel>
+			</State>
+			<State id="setpointHeat">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Heat Setpoint Changed</TriggerLabel>
+				<ControlPageLabel>Heat Setpoint</ControlPageLabel>
+			</State>
+			<State id="hvacMode">
+				<ValueType>HvacMode</ValueType>
+				<TriggerLabel>HVAC Mode Changed</TriggerLabel>
+				<ControlPageLabel>HVAC Mode</ControlPageLabel>
+			</State>
+			<State id="schedule">
+				<ValueType>Boolean</ValueType>
+				<TriggerLabel>Schedule State Changed</TriggerLabel>
+				<ControlPageLabel>Schedule Active</ControlPageLabel>
+			</State>
+			<State id="windowOpen">
+				<ValueType>Boolean</ValueType>
+				<TriggerLabel>Window Detection Changed</TriggerLabel>
+				<ControlPageLabel>Window Open</ControlPageLabel>
+			</State>
+			<State id="boostMode">
+				<ValueType>Boolean</ValueType>
+				<TriggerLabel>Boost Mode Changed</TriggerLabel>
+				<ControlPageLabel>Boost Mode</ControlPageLabel>
+			</State>
+		</States>
+		<UiDisplayStateId>temperatureInput1</UiDisplayStateId>
+	</Device>
+
+	<!-- Sensor Device -->
+	<Device type="sensor" id="shellySensor" allowUserCreation="false">
+		<Name>Shelly TRV Sensor</Name>
+		<ConfigUI>
+			<Field id="controllerId" type="textfield" hidden="true">
+				<Label>Controller ID:</Label>
+			</Field>
+			<Field id="equipmentId" type="textfield" hidden="true">
+				<Label>Equipment ID:</Label>
+			</Field>
+		</ConfigUI>
+		<States>
+			<State id="sensorValue">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Sensor Value Changed</TriggerLabel>
+				<ControlPageLabel>Value</ControlPageLabel>
+			</State>
+			<State id="batteryVoltage">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>Battery Voltage Changed</TriggerLabel>
+				<ControlPageLabel>Battery Voltage</ControlPageLabel>
+			</State>
+		</States>
+		<UiDisplayStateId>sensorValue</UiDisplayStateId>
+	</Device>
+</Devices>

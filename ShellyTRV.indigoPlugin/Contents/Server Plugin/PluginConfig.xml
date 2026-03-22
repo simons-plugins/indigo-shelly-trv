@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<PluginConfig>
+	<Field id="brokerHost" type="textfield" defaultValue="localhost">
+		<Label>MQTT Broker Host:</Label>
+	</Field>
+	<Field id="brokerPort" type="textfield" defaultValue="1883">
+		<Label>MQTT Broker Port:</Label>
+	</Field>
+	<Field id="mqttUsername" type="textfield">
+		<Label>MQTT Username (optional):</Label>
+	</Field>
+	<Field id="mqttPassword" type="textfield">
+		<Label>MQTT Password (optional):</Label>
+	</Field>
+	<Field id="rootTopic" type="textfield" defaultValue="shellies">
+		<Label>MQTT Root Topic:</Label>
+	</Field>
+	<Field id="deviceFolder" type="menu">
+		<Label>Device Folder:</Label>
+		<List class="self" filter="" method="getDeviceFolderList" dynamicReload="true"/>
+	</Field>
+	<Field id="showDebugInfo" type="checkbox" defaultValue="false">
+		<Label>Enable debug logging</Label>
+	</Field>
+	<Field id="logMqtt" type="checkbox" defaultValue="false">
+		<Label>Log all MQTT messages</Label>
+	</Field>
+</PluginConfig>
