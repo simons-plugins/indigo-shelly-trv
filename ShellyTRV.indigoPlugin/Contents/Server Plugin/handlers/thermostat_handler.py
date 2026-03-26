@@ -61,12 +61,12 @@ def process_thermostat_message(topic_parts, payload, logger):
             # HVAC mode based on enabled state
             if target_t.get("enabled"):
                 state_updates.append({
-                    "key": "hvacMode",
+                    "key": "hvacOperationMode",
                     "value": indigo.kHvacMode.Heat
                 })
             else:
                 state_updates.append({
-                    "key": "hvacMode",
+                    "key": "hvacOperationMode",
                     "value": indigo.kHvacMode.Off
                 })
 
@@ -91,6 +91,31 @@ def process_thermostat_message(topic_parts, payload, logger):
                     "key": "boostMode",
                     "value": boost_active
                 })
+
+        # Battery data (on the thermostat device, not a separate sensor)
+        bat_data = payload.get("bat", {})
+        if isinstance(bat_data, dict):
+            if "value" in bat_data:
+                state_updates.append({
+                    "key": "batteryLevel",
+                    "value": bat_data["value"],
+                    "uiValue": f"{bat_data['value']}%"
+                })
+            if "voltage" in bat_data:
+                state_updates.append({
+                    "key": "batteryVoltage",
+                    "value": bat_data["voltage"],
+                    "uiValue": f"{bat_data['voltage']:.3f}V"
+                })
+
+        # WiFi signal strength
+        wifi_sta = payload.get("wifi_sta", {})
+        if "rssi" in wifi_sta:
+            state_updates.append({
+                "key": "wifiSignal",
+                "value": wifi_sta["rssi"],
+                "uiValue": f"{wifi_sta['rssi']} dBm"
+            })
 
     # Handle status messages
     elif topic_parts[-1] == "status":
@@ -119,14 +144,24 @@ def process_thermostat_message(topic_parts, payload, logger):
         # HVAC mode based on enabled state
         if target_t.get("enabled"):
             state_updates.append({
-                "key": "hvacMode",
+                "key": "hvacOperationMode",
                 "value": indigo.kHvacMode.Heat
             })
         else:
             state_updates.append({
-                "key": "hvacMode",
+                "key": "hvacOperationMode",
                 "value": indigo.kHvacMode.Off
             })
+
+        # Battery in status messages
+        if "bat" in payload:
+            bat_val = payload["bat"]
+            if isinstance(bat_val, (int, float)):
+                state_updates.append({
+                    "key": "batteryLevel",
+                    "value": bat_val,
+                    "uiValue": f"{bat_val}%"
+                })
 
     if state_updates:
         updates.append((device_id, state_updates))

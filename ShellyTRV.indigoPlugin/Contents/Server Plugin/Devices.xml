@@ -50,21 +50,6 @@
 			</Field>
 		</ConfigUI>
 		<States>
-			<State id="temperatureInput1">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Temperature Changed</TriggerLabel>
-				<ControlPageLabel>Temperature</ControlPageLabel>
-			</State>
-			<State id="setpointHeat">
-				<ValueType>Number</ValueType>
-				<TriggerLabel>Heat Setpoint Changed</TriggerLabel>
-				<ControlPageLabel>Heat Setpoint</ControlPageLabel>
-			</State>
-			<State id="hvacMode">
-				<ValueType>HvacMode</ValueType>
-				<TriggerLabel>HVAC Mode Changed</TriggerLabel>
-				<ControlPageLabel>HVAC Mode</ControlPageLabel>
-			</State>
 			<State id="schedule">
 				<ValueType>Boolean</ValueType>
 				<TriggerLabel>Schedule State Changed</TriggerLabel>
@@ -80,33 +65,22 @@
 				<TriggerLabel>Boost Mode Changed</TriggerLabel>
 				<ControlPageLabel>Boost Mode</ControlPageLabel>
 			</State>
-		</States>
-		<UiDisplayStateId>temperatureInput1</UiDisplayStateId>
-	</Device>
-
-	<!-- Sensor Device -->
-	<Device type="sensor" id="shellySensor" allowUserCreation="false">
-		<Name>Shelly TRV Sensor</Name>
-		<ConfigUI>
-			<Field id="controllerId" type="textfield" hidden="true">
-				<Label>Controller ID:</Label>
-			</Field>
-			<Field id="equipmentId" type="textfield" hidden="true">
-				<Label>Equipment ID:</Label>
-			</Field>
-		</ConfigUI>
-		<States>
-			<State id="sensorValue">
+			<State id="batteryLevel">
 				<ValueType>Number</ValueType>
-				<TriggerLabel>Sensor Value Changed</TriggerLabel>
-				<ControlPageLabel>Value</ControlPageLabel>
+				<TriggerLabel>Battery Level Changed</TriggerLabel>
+				<ControlPageLabel>Battery Level</ControlPageLabel>
 			</State>
 			<State id="batteryVoltage">
 				<ValueType>Number</ValueType>
 				<TriggerLabel>Battery Voltage Changed</TriggerLabel>
 				<ControlPageLabel>Battery Voltage</ControlPageLabel>
 			</State>
+			<State id="wifiSignal">
+				<ValueType>Number</ValueType>
+				<TriggerLabel>WiFi Signal Changed</TriggerLabel>
+				<ControlPageLabel>WiFi Signal</ControlPageLabel>
+			</State>
 		</States>
-		<UiDisplayStateId>sensorValue</UiDisplayStateId>
+		<UiDisplayStateId>temperatureInput1</UiDisplayStateId>
 	</Device>
 </Devices>

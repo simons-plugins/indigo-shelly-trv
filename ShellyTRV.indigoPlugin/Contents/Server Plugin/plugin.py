@@ -18,11 +18,10 @@ except ImportError:
     PAHO_AVAILABLE = False
 
 from discovery import EquipmentDiscovery
-from handlers import thermostat_handler, sensor_handler
+from handlers import thermostat_handler
 
 DEVICE_TYPE_MAP = {
-    "thermostat": ("shellyThermostat", "equipmentId"),
-    "sensor": ("shellySensor", "equipmentId")
+    "thermostat": ("shellyThermostat", "equipmentId")
 }
 
 
@@ -279,12 +278,6 @@ class Plugin(indigo.PluginBase):
             if device:
                 device.updateStatesOnServer(state_updates)
 
-        # Route to sensor handler
-        sensor_updates = sensor_handler.process_sensor_message(topic_parts, payload, self.logger)
-        for equipment_id, state_updates in sensor_updates:
-            device = self._find_child_device(coordinator_dev_id, "shellySensor", "equipmentId", str(equipment_id))
-            if device:
-                device.updateStatesOnServer(state_updates)
 
     # -------------------------------------------------------------------------
     # Actions

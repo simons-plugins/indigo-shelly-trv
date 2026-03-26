@@ -7,9 +7,11 @@ import logging
 import queue
 import threading
 import time
+import uuid
 
 try:
     import paho.mqtt.client as mqtt
+    from paho.mqtt.enums import CallbackAPIVersion
     PAHO_AVAILABLE = True
 except ImportError:
     PAHO_AVAILABLE = False
@@ -41,8 +43,8 @@ class ThreadMqttHandler(threading.Thread):
     def run(self):
         try:
             self.mqtt_client = mqtt.Client(
-                client_id=f"indigo-plugin-{self.dev_id}",
-                clean_session=True,
+                callback_api_version=CallbackAPIVersion.VERSION2,
+                client_id=f"indigo-plugin-{self.dev_id}-{uuid.uuid4().hex[:8]}",
                 protocol=mqtt.MQTTv311
             )
 
@@ -96,8 +98,8 @@ class ThreadMqttHandler(threading.Thread):
         else:
             self.logger.warning("Cannot publish — MQTT not connected")
 
-    def _on_connect(self, client, userdata, flags, rc):
-        if rc == 0:
+    def _on_connect(self, client, userdata, connect_flags, reason_code, properties):
+        if not reason_code.is_failure:
             self.connected = True
             subscription = f"{self.root_topic}/#"
             client.subscribe(subscription, qos=1)
@@ -111,19 +113,19 @@ class ThreadMqttHandler(threading.Thread):
                 "status": "connected"
             })
         else:
-            self.logger.error(f"MQTT connection failed with code {rc}")
+            self.logger.error(f"MQTT connection failed: {reason_code}")
             self.message_queue.put({
                 "type": "connection_status",
                 "dev_id": self.dev_id,
                 "status": "disconnected",
-                "error": f"Connection refused (code {rc})"
+                "error": f"Connection refused ({reason_code})"
             })
 
-    def _on_disconnect(self, client, userdata, rc):
+    def _on_disconnect(self, client, userdata, disconnect_flags, reason_code, properties):
         self.connected = False
-        if rc != 0:
+        if reason_code.is_failure:
             self.logger.warning(
-                f"Unexpected MQTT disconnection (code {rc}), will auto-reconnect"
+                f"Unexpected MQTT disconnection ({reason_code}), will auto-reconnect"
             )
         self.message_queue.put({
             "type": "connection_status",

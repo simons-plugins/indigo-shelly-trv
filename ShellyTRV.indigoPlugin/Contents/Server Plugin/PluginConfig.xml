@@ -12,8 +12,8 @@
 	<Field id="mqttPassword" type="textfield">
 		<Label>MQTT Password (optional):</Label>
 	</Field>
-	<Field id="rootTopic" type="textfield" defaultValue="shellies">
-		<Label>MQTT Root Topic:</Label>
+	<Field id="rootTopic" type="textfield" defaultValue="shellies/shellytrv-">
+		<Label>MQTT Topic Prefix:</Label>
 	</Field>
 	<Field id="deviceFolder" type="menu">
 		<Label>Device Folder:</Label>

@@ -19,8 +19,7 @@ class EquipmentDiscovery:
         """
         if coordinator_dev_id not in self.discovered:
             self.discovered[coordinator_dev_id] = {
-                "thermostats": {},
-                "sensors": {}
+                "thermostats": {}
             }
 
         coord_equip = self.discovered[coordinator_dev_id]
@@ -29,10 +28,10 @@ class EquipmentDiscovery:
         if not isinstance(payload, (dict, list)):
             return new_equipment
 
-        # Extract device ID from topic parts (e.g., "shellytrv-8CF6811871C7")
         if len(topic_parts) < 2:
             return new_equipment
 
+        # Extract device ID from topic parts (e.g., "shellytrv-8CF6811871C7")
         device_id = None
         for part in topic_parts:
             if part.startswith("shellytrv-"):
@@ -46,10 +45,9 @@ class EquipmentDiscovery:
         if topic_parts[-1] == "info" and isinstance(payload, dict):
             thermostats = payload.get("thermostats", [])
             if thermostats and isinstance(thermostats, list):
-                # Create thermostat device if not already discovered
                 if device_id not in coord_equip["thermostats"]:
                     coord_equip["thermostats"][device_id] = {
-                        "name": f"Shelly TRV {device_id[-6:]}",  # Last 6 chars of ID
+                        "name": f"Shelly TRV {device_id[-6:]}",
                         "id": device_id
                     }
                     new_equipment.append({
@@ -58,38 +56,8 @@ class EquipmentDiscovery:
                         "name": f"Shelly TRV {device_id[-6:]}"
                     })
 
-            # Create battery sensor if battery data present
-            if "bat" in payload:
-                sensor_id = f"{device_id}_battery"
-                if sensor_id not in coord_equip["sensors"]:
-                    coord_equip["sensors"][sensor_id] = {
-                        "name": f"Shelly TRV {device_id[-6:]} Battery",
-                        "id": sensor_id
-                    }
-                    new_equipment.append({
-                        "type": "sensor",
-                        "id": sensor_id,
-                        "name": f"Shelly TRV {device_id[-6:]} Battery"
-                    })
-
-            # Create WiFi signal sensor if WiFi data present
-            wifi_sta = payload.get("wifi_sta")
-            if wifi_sta and "rssi" in wifi_sta:
-                sensor_id = f"{device_id}_wifi"
-                if sensor_id not in coord_equip["sensors"]:
-                    coord_equip["sensors"][sensor_id] = {
-                        "name": f"Shelly TRV {device_id[-6:]} WiFi Signal",
-                        "id": sensor_id
-                    }
-                    new_equipment.append({
-                        "type": "sensor",
-                        "id": sensor_id,
-                        "name": f"Shelly TRV {device_id[-6:]} WiFi Signal"
-                    })
-
         # Check if this is a status message
         elif topic_parts[-1] == "status" and isinstance(payload, dict):
-            # Status messages may also trigger discovery if not seen in info
             if ("tmp" in payload and "target_t" in payload and
                 device_id not in coord_equip["thermostats"]):
                 coord_equip["thermostats"][device_id] = {
